@@ -5,6 +5,7 @@
  */
 package co.edu.unipiloto.metodos.servlet;
 
+import co.edu.unipiloto.metodos.numbers.NumbersHandler;
 import co.edu.unipiloto.metodos.session.CalculadoraBeanLocal;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,6 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "CalculadoraServlet", urlPatterns = {"/CalculadoraServlet"})
 public class CalculadoraServlet extends HttpServlet {
 
+    private NumbersHandler ctrl = new NumbersHandler();
+    private boolean semaforo = false;
+    private String operacion;
+
     @EJB
     private CalculadoraBeanLocal calculadoraBean;
 
@@ -38,46 +43,40 @@ public class CalculadoraServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        int val1;
-        try {
-            val1 = Integer.parseInt(request.getParameter("value1"));
-        } catch (Exception e) {
-            val1 = -1;
-        }
+        String num = request.getParameter("number");
         
-        int val2;
-        try {
-            val2 = Integer.parseInt(request.getParameter("value2"));
-        } catch (Exception e) {
-            val2 = -1;
+        if (!this.semaforo) {
+            if (num != null) {
+                this.ctrl.setNumber1S(num);
+                request.setAttribute("actualNum", this.ctrl.getNumber1S());
+            }
+        } else {
+            if (num != null) {
+                this.ctrl.setNumber2S(num);
+                request.setAttribute("actualNum", this.ctrl.getNumber2S());
+            }
         }
-        
 
         String action = request.getParameter("action");
-
-        double rst = 0;
-        switch (action) {
-            case "Sumar":
-                rst = calculadoraBean.suma(val1, val2);
-                break;
-            case "Restar":
-                rst = calculadoraBean.resta(val1, val2);
-                break;
-            case "Multiplicar":
-                rst = calculadoraBean.multiplicacion(val1, val2);
-                break;
-            case "Dividir":
-                rst = calculadoraBean.division(val1, val2);
-                break;
-            case "Modulo":
-                rst = calculadoraBean.modulo(val1, val2);
-                break;
-            case "Raiz":
-                rst = calculadoraBean.raiz(val1);
-                break;
+        if (action != null) {
+            if (!action.equals("=")) {
+                this.semaforo = true;
+            }
+            switch (action) {
+                case "=":
+                    double rst = this.calcular(this.operacion, this.ctrl.getNum1(), this.ctrl.getNum2());
+                    request.setAttribute("rst", rst);
+                    request.setAttribute("actualNum", rst);
+                    this.ctrl = new NumbersHandler();
+                    this.semaforo = false;
+                    break;
+                default:
+                    this.operacion = action;
+                    break;
+            }
         }
-        
 
+        request.getRequestDispatcher("index.jsp").forward(request, response);
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -87,10 +86,31 @@ public class CalculadoraServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CalculadoraServlet at " + request.getContextPath() + "</h1>");
-            out.println("<p>El resultado es: " + rst + "</p>");
             out.println("</body>");
             out.println("</html>");
         }
+    }
+
+    private double calcular(String operacion, double val1, double val2) {
+        double rst = 0;
+        switch (operacion) {
+            case "+":
+                rst = calculadoraBean.suma(val1, val2);
+                break;
+            case "-":
+                rst = calculadoraBean.resta(val1, val2);
+                break;
+            case "*":
+                rst = calculadoraBean.multiplicacion(val1, val2);
+                break;
+            case "/":
+                rst = calculadoraBean.division(val1, val2);
+                break;
+            case "%":
+                rst = calculadoraBean.modulo(val1, val2);
+                break;
+        }
+        return rst;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

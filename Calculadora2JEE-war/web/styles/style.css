@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(255, 236, 239);
+}
+
+.calculadora {
+    padding: 20px;
+    display: grid;
+    grid-template-areas: 
+                        "resul resul resul resul"
+                        "siete ocho nueve div"
+                        "cuatro cinco seis mult"
+                        "uno dos tres mod"
+                        "cero suma res igual";
+    gap: 10px;
+    width: 40vw;
+    height: 60vh;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 2px 2px 2px rgb(75, 75, 75);
+}
+
+.resultado {
+    display: flex;
+    min-height: 20px;
+    align-items: center;
+    padding: 0 20px;
+    grid-area: resul;
+    border-radius: 8px;
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px rgb(75, 75, 75);
+}
+
+.btn {
+    border-radius: 8px;
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px rgb(75, 75, 75);
+    cursor: pointer;
+}
+
+.uno {
+    grid-area: uno;
+}
+
+.dos {
+    grid-area: dos;
+}
+
+.tres {
+    grid-area: tres;
+}
+
+.cuatro {
+    grid-area: cuatro;
+}
+
+.cinco {
+    grid-area: cinco;
+}
+
+.seis {
+    grid-area: seis;
+}
+
+.siete {
+    grid-area: siete;
+}
+
+.ocho {
+    grid-area: ocho;
+}
+
+.nueve {
+    grid-area: nueve;
+}
+
+.cero {
+    grid-area: cero;
+}
+
+.suma {
+    grid-area: suma;
+}
+
+.resta {
+    grid-area: res;
+}
+
+.multi {
+    grid-area: mult;
+}
+
+.divi {
+    grid-area: div;
+}
+
+.mod {
+    grid-area: mod;
+}
+
+.igual {
+    grid-area: igual;
+}

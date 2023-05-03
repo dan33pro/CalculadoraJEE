@@ -15,28 +15,24 @@ import javax.ejb.Stateless;
 public class CalculadoraBean implements CalculadoraBeanLocal {
 
     @Override
-    public Integer suma(int val1, int val2) {
+    public Double suma(double val1, double val2) {
         return val1 + val2;
     }
-    
-    
+
     @Override
-    public Integer resta(int val1, int val2) {
+    public Double resta(double val1, double val2) {
         return val1 - val2;
     }
 
     @Override
-    public Integer multiplicacion(int val1, int val2) {
+    public Double multiplicacion(double val1, double val2) {
         return val1 * val2;
     }
-    
 
     @Override
-    public Integer modulo(int val1, int val2) {
+    public Double modulo(double val1, double val2) {
         return val1 % val2;
     }
-
-    
 
     @Override
     public Double division(double val1, double val2) {
@@ -47,6 +43,8 @@ public class CalculadoraBean implements CalculadoraBeanLocal {
     public Double raiz(double val1) {
         return Math.sqrt(val1);
     }
+    
+    
     
     
 }
